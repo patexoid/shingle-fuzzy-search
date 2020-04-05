@@ -1,6 +1,6 @@
 package com.patex.shingle.byteSet;
 
-public class Node8 implements Node {
+class Node8 implements Node {
     private final int hashCode;
     private final byte b0, b1, b2, b3, b4, b5, b6, b7;
 

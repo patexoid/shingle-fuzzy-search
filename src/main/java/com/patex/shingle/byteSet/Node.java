@@ -1,6 +1,6 @@
 package com.patex.shingle.byteSet;
 
-public interface Node {
+interface Node {
 
     Node getNext();
 
