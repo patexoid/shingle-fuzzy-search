@@ -2,7 +2,7 @@ package com.patex.shingle.byteSet;
 
 import java.util.Arrays;
 
-public class NodeVar implements Node {
+class NodeVar implements Node {
     private final int hashCode;
     private final byte[] b;
 
