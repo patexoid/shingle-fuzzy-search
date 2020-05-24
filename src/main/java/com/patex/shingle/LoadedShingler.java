@@ -7,20 +7,20 @@ import java.util.Iterator;
 /**
  *
  */
+@SuppressWarnings("ALL")
 class LoadedShingler implements Shingler {
 
     private final ByteHashSet shingles;
-
 
     LoadedShingler(ByteHashSet shingles) {
         this.shingles = shingles;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public Iterator<byte[]> iterator() {
         return shingles.iterator();
     }
-
 
     @Override
     public int size() {
@@ -35,5 +35,4 @@ class LoadedShingler implements Shingler {
     public boolean contains(byte[] shingleHash) {
         return shingles.contains(shingleHash);
     }
-
 }

@@ -1,0 +1,8 @@
+{
+  skipWords: [on, in ,at, since, for, ago, before, to, past, to, till,
+              untill, by, beside, under, below, over, above, across, through
+    to, into, towards, onto,into, from, out, about, and, but, either, or, after, although,  " "],
+  averageWordLength: 5,
+  delimiters: ".,!?:;„“…'\"-—–+\n\r()»« 1234567890/%№"
+}
+

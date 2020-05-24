@@ -72,15 +72,14 @@ public class ByteHashSet implements Iterable<byte[]> {
         Node node = table[index];
         if (node == null) {
             table[index] = createNode.apply(key);
-            size++;
         } else {
             do {
                 if (node.hashCode() == hashCode && node.isEqualsArray(key))
                     return;
             } while ((node = node.getNext()) != null);
             table[index] = createNextNode.apply(key, table[index]);
-            size++;
         }
+        size++;
     }
 
     public int getSize() {
@@ -91,6 +90,7 @@ public class ByteHashSet implements Iterable<byte[]> {
         return byteArraySize;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public Iterator<byte[]> iterator() {
         return new ByteIterator();

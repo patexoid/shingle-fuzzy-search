@@ -5,13 +5,13 @@ import java.io.InputStream;
 
 /**
  * Storage to keep byte {@link Shingleable} representation outside, can use anything like DB, files etc.
- * @param <T> key
+ * @param <KEY> key
  */
-public interface ShingleCacheStorage<T> {
+public interface ShingleCacheStorage<KEY> {
 
-    InputStream load(T t);
+    InputStream load(KEY key);
 
-    void save(byte[] bytes, T t);
+    void save(KEY key, byte[] bytes);
 
 
 }
