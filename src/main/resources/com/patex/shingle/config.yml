@@ -1,0 +1,23 @@
+{
+  langConfigs: [ {
+                  lang: rus,
+                  langClass: com.patex.shingle.config.LangConfigImpl,
+                  langConfig: com/patex/shingle/rus.yml
+                },
+                {
+                  lang: ukr,
+                  langClass: com.patex.shingle.config.LangConfigImpl,
+                  langConfig: com/patex/shingle/ukr.yml
+                },
+                 {
+                   lang: eng,
+                   langClass: com.patex.shingle.config.LangConfigImpl,
+                   langConfig: com/patex/shingle/eng.yml
+                 }],
+
+  defaultLang: {
+    lang: default,
+    langClass: com.patex.shingle.config.LangConfigImpl,
+    langConfig: com/patex/shingle/default.yml
+  }
+}

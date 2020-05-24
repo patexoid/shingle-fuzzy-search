@@ -1,0 +1,6 @@
+{
+  skipWords: [" "],
+  averageWordLength: 5,
+  delimiters: ".,!?:;„“…'\"-—–+\n\r()»« 1234567890/%№"
+}
+

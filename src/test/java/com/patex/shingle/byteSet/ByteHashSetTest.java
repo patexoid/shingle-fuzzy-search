@@ -41,7 +41,6 @@ public class ByteHashSetTest {
         Assert.assertFalse(set.contains(key));
     }
 
-
     @Test
     public void testExistsSameHash() {
         ByteHashSet set = ByteSetFactory.createByteSet(64, byteArraySize);
@@ -53,8 +52,7 @@ public class ByteHashSetTest {
         key1[0] = -30;
         key2[0] = -31;
         key2[1] = 31;
-        Assert.assertTrue("hashCode calculation was changed",
-                ByteHashSet.getHashCode(key1, byteArraySize) == ByteHashSet.getHashCode(key2, byteArraySize));
+        Assert.assertEquals("hashCode calculation was changed", ByteHashSet.getHashCode(key1, byteArraySize), ByteHashSet.getHashCode(key2, byteArraySize));
         set.add(key1);
         Assert.assertTrue(set.contains(key1));
         Assert.assertFalse(set.contains(key2));

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +26,7 @@ public class ShingleComparsionTest {
 
     @Parameterized.Parameters
     public static Iterable<Integer> data() {
-        return Arrays.asList(8,16);//TODO other size
+        return Arrays.asList(8, 16, 32);//TODO other size
     }
 
     @Test
@@ -50,7 +51,12 @@ public class ShingleComparsionTest {
 
     private void checkSimilarity(List<String> content, List<String> similarContents) {
         ShingleMatcher<List<String>, List<String>> shingleMatcher =
-                new ShingleMatcher<>(this::toShingleable, o -> o, 1, 0, byteArraySize);
+                ShingleMatcher.builder(this::toShingleable).
+                        coef(1).
+                        cache(0,0, TimeUnit.MINUTES).
+                        hashAlgorithm("SHA-256").
+                        byteArraySize(byteArraySize)
+                .similarity(0.7f).build();
         Assert.assertTrue(shingleMatcher.isSimilar(content, similarContents));
     }
 
@@ -83,8 +89,13 @@ public class ShingleComparsionTest {
                 limit(100).collect(Collectors.toList());
         List<String> other = Stream.generate(() -> RandomStringUtils.randomAlphabetic(1 + random.nextInt(8))).
                 limit(100).collect(Collectors.toList());
-        ShingleMatcher<List<String>, List<String>> shingleMatcher = new ShingleMatcher<>(this::toShingleable, o -> o,
-                1, 0, byteArraySize);
+        ShingleMatcher<List<String>, List<String>> shingleMatcher =
+                ShingleMatcher.builder(this::toShingleable).
+                        coef(1).
+                        hashAlgorithm("SHA-256").
+                        cache(0,0, TimeUnit.MINUTES).
+                        byteArraySize(byteArraySize)
+                        .similarity(0.7f).build();
         Assert.assertFalse(shingleMatcher.isSimilar(content, other));
     }
 
