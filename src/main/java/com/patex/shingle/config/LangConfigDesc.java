@@ -26,7 +26,7 @@ public class LangConfigDesc {
             }
             Yaml yaml = new Yaml(new Constructor(langConfigClass));
             try (InputStream confgIs = getConfigYaml()) {
-                if (confgIs != null) {
+                if (confgIs == null) {
                     log.error("Cant load lang config for lang {}, lang class: {} config: {}",
                             lang, langClass, langConfig);
                 }
