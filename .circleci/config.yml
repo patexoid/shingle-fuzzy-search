@@ -26,7 +26,9 @@ jobs:
       - run:
           name: Test
           command: mvn test
-
+      - run:
+          name: deploy
+          command: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
