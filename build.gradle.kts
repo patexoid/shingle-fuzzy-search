@@ -28,16 +28,17 @@ val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDe
 val details = versionDetails()
 
 group = "com.patex"
-version = details.version
+version =
+    if (details.commitDistance == 0) details.lastTag else (details.lastTag + "-" + details.commitDistance + "-" + details.lastTag)
 description = "fuzzysearch"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
-print(version)
+println(version)
 java {
     withSourcesJar()
     withJavadocJar()
 }
-if(details.commitDistance==0 && details.isCleanTag) {
+if(details.commitDistance==0) {
     publishing {
         repositories {
             maven {
