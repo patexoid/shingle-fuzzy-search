@@ -21,14 +21,14 @@ jobs:
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
-          command: mvn -B -DskipTests clean package
+          command: ./gradlew build -x test
       # Then run your tests!
       - run:
           name: Test
-          command: mvn test
+          command: ./gradlew test
       - run:
           name: deploy
-          command: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
+          command: ./gradlew publish
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
