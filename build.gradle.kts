@@ -29,7 +29,7 @@ val details = versionDetails()
 
 group = "com.patex"
 version =
-    if (details.commitDistance == 0) details.lastTag else (details.lastTag + "-" + details.commitDistance + "-" + details.lastTag)
+    if (details.commitDistance == 0) details.lastTag else (details.lastTag + "-" + details.commitDistance + "-" + details.gitHash)
 description = "fuzzysearch"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
