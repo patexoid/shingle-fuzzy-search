@@ -80,10 +80,11 @@ public class ShingleMatcher<T, ID> {
     @SneakyThrows
     private Shingler getShingler(T t) {
         ID id = idFunc.apply(t);
-        return cache.get(id, () -> shingleCache.get(id).orElse(createShingler(id, t)));
+        return cache.get(id, () -> shingleCache.get(id).orElseGet(() ->  createShingler(id, t)));
     }
 
-    private Shingler createShingler(ID id, T t) throws IOException {
+    @SneakyThrows
+    private Shingler createShingler(ID id, T t){
         ByteHashSet shingleSet = shinglerCreator.createShingles(mapFunc.apply(t));
         LoadedShingler shingler = new LoadedShingler(shingleSet);
         shingleCache.put(id, shingler);
