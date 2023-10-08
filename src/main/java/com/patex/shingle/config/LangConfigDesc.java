@@ -2,6 +2,7 @@ package com.patex.shingle.config;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -24,7 +25,7 @@ public class LangConfigDesc {
             if (langConfig == null) {
                 return langConfigClass.getConstructor().newInstance();
             }
-            Yaml yaml = new Yaml(new Constructor(langConfigClass));
+            Yaml yaml = new Yaml(new Constructor(langConfigClass, new LoaderOptions()));
             try (InputStream confgIs = getConfigYaml()) {
                 if (confgIs == null) {
                     log.error("Cant load lang config for lang {}, lang class: {} config: {}",
