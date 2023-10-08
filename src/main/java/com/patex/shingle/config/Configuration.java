@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -54,7 +55,7 @@ public class Configuration {
             configIs = Configuration.class.getClassLoader().getResourceAsStream(DEFAULT_SHINGLE_CONFIG);
         }
         assert configIs != null;
-        Yaml yaml = new Yaml(new Constructor(Configuration.class));
+        Yaml yaml = new Yaml(new Constructor(Configuration.class,new LoaderOptions()));
         try {
             return yaml.load(configIs);
         } finally {

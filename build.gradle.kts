@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-    api("com.google.guava:guava:29.0-jre")
+    api("com.google.guava:guava:32.1.2-jre")
     api("org.slf4j:slf4j-api:1.7.30")
-    api("org.yaml:snakeyaml:1.26")
+    api("org.yaml:snakeyaml:2.2")
     testImplementation("junit:junit:4.13.1")
     testImplementation("org.apache.commons:commons-text:1.4")
     compileOnly("org.projectlombok:lombok:1.18.24")
