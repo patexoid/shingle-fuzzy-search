@@ -6,10 +6,10 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
+    mavenLocal()
 }
 
 dependencies {
@@ -18,23 +18,25 @@ dependencies {
     api("org.yaml:snakeyaml:2.2")
     testImplementation("junit:junit:4.13.1")
     testImplementation("org.apache.commons:commons-text:1.4")
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+    testCompileOnly("org.projectlombok:lombok:1.18.46")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
 }
 
-val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
+val versionDetails = extra["versionDetails"] as groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails>
 val details = versionDetails()
 
 group = "com.patex"
 version =
     if (details.commitDistance == 0) details.lastTag else (details.lastTag + "-" + details.commitDistance + "-" + details.gitHash)
 description = "fuzzysearch"
-java.sourceCompatibility = JavaVersion.VERSION_11
 
 println(version)
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
     withSourcesJar()
     withJavadocJar()
 }
@@ -57,6 +59,7 @@ if(details.commitDistance==0) {
 }
 tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
+    options.release = 17
 }
 
 tasks.withType<Javadoc>() {

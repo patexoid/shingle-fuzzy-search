@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/patexoid/shingle-fuzzy-search.svg?branch=master)](https://travis-ci.org/patexoid/shingle-fuzzy-search)
-
 # shingle-fuzzy-search
 object search, based on https://en.wikipedia.org/wiki/W-shingling.
 
