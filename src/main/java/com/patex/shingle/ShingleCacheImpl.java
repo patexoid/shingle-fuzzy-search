@@ -16,6 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class ShingleCacheImpl<KEY> implements ShingleCache<KEY> {
 
+    private static final int HEADER_SIZE = 8;
+
     private final ShingleCacheStorage<KEY> storage;
 
     @Override
@@ -27,13 +29,15 @@ class ShingleCacheImpl<KEY> implements ShingleCache<KEY> {
             int size = readInt(is);
             int byteArrayLength = readInt(is);
             ByteHashSet set = ByteSetFactory.createByteSet(size, byteArrayLength);
-            byte[] buffer = new byte[1024 * 1024];
+            int bufferSize = (int) Math.min(1024L * 1024, Math.max(1, (long) size * byteArrayLength));
+            byte[] buffer = new byte[bufferSize];
             int bufferReadOff = 0;
+            int shinglesRead = 0;
             while (true) {
                 int readBytesCount = is.read(buffer, bufferReadOff, buffer.length - bufferReadOff);
                 if (readBytesCount == -1) {
                     if (bufferReadOff != 0) {
-                        log.warn("Warning broken cache for key: {}", key);
+                        log.warn("Warning broken cache for key: {}, truncated mid-shingle", key);
                         return Optional.empty();
                     }
                     break;
@@ -43,18 +47,19 @@ class ShingleCacheImpl<KEY> implements ShingleCache<KEY> {
                 int position = 0;
                 while (readBytesCount - position >= byteArrayLength) {
                     byte[] shingle = new byte[byteArrayLength];
-                    for (int i = 0; i < byteArrayLength; i++) {
-                        shingle[i] = buffer[position++];
-                    }
+                    System.arraycopy(buffer, position, shingle, 0, byteArrayLength);
+                    position += byteArrayLength;
                     set.add(shingle);
+                    shinglesRead++;
                 }
                 if (position < readBytesCount) {
-                    int i = 0;
-                    for (; i < byteArrayLength && position < readBytesCount; i++) {
-                        buffer[i] = buffer[position++];
-                    }
-                    bufferReadOff = i;
+                    bufferReadOff = readBytesCount - position;
+                    System.arraycopy(buffer, position, buffer, 0, bufferReadOff);
                 }
+            }
+            if (shinglesRead != size) {
+                log.warn("Warning broken cache for key: {}, expected {} shingles but read {}", key, size, shinglesRead);
+                return Optional.empty();
             }
             LoadedShingler shingler = new LoadedShingler(set);
             return Optional.of(shingler);
@@ -72,7 +77,8 @@ class ShingleCacheImpl<KEY> implements ShingleCache<KEY> {
     }
 
     public void put(KEY key, Shingler shingler) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int capacity = HEADER_SIZE + shingler.size() * shingler.getByteArraySize();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(capacity);
         writeInt(baos, shingler.size());
         writeInt(baos, shingler.getByteArraySize());
         for (byte[] bytes : shingler) {
